@@ -9,6 +9,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
@@ -283,10 +284,18 @@ public class DataManager implements AppDataComponent {
 
     public Shape getTopShape(int x, int y) {
 	for (int i = shapes.size() - 1; i >= 0; i--) {
+            try{
 	    Shape shape = (Shape)shapes.get(i);
 	    if (shape.contains(x, y)) {
 		return shape;
 	    }
+            }
+            catch(Exception e) {
+                StackPane p = (StackPane)shapes.get(i);
+                Shape v;
+                v = (Shape) p.getChildren().get(0);
+                return v;
+            }
 	}
 	return null;
     }

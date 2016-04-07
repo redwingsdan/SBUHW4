@@ -1,18 +1,37 @@
 package jclassdesignerapp.gui;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
 import java.io.IOException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import static jclassdesignerapp.PropertyType.ELLIPSE_ICON;
@@ -34,6 +53,7 @@ import jclassdesignerapp.controller.PoseEditController;
 import jclassdesignerapp.data.DataManager;
 import static jclassdesignerapp.data.DataManager.BLACK_HEX;
 import static jclassdesignerapp.data.DataManager.WHITE_HEX;
+import jclassdesignerapp.data.DraggableRectangle;
 import jclassdesignerapp.data.PoseMakerState;
 import saf.ui.AppYesNoCancelDialogSingleton;
 import saf.ui.AppMessageDialogSingleton;
@@ -109,6 +129,18 @@ public class Workspace extends AppWorkspaceComponent {
     // SEVENTH ROW
     HBox row7Box;
     Button snapshotButton;
+    
+    VBox row8Box;
+    Label classNameLabel;
+    TextField className;
+    
+    VBox row9Box;
+    Label packageNameLabel;
+    TextField packageName;
+    Label parentNameLabel;
+    ChoiceBox parentName;
+    
+    TableView table;
     
     // THIS IS WHERE WE'LL RENDER OUR DRAWING
     Pane canvas;
@@ -207,6 +239,56 @@ public class Workspace extends AppWorkspaceComponent {
 	// ROW 7
 	row7Box = new HBox();
 	snapshotButton = gui.initChildButton(row7Box, SNAPSHOT_ICON.toString(), SNAPSHOT_TOOLTIP.toString(), false);
+        
+        row8Box = new VBox();
+        classNameLabel = new Label("Class Name");
+        className = new TextField();
+        row8Box.getChildren().add(classNameLabel);
+        row8Box.getChildren().add(className);
+        
+        packageNameLabel = new Label("Package Name");
+        packageName = new TextField();
+        packageName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+         public void handle(KeyEvent event) {
+             DataManager data3 = (DataManager)app.getDataComponent();
+             DraggableRectangle y = (DraggableRectangle)data3.getSelectedShape();
+             y.setName(packageName.getText());
+             StackPane stack = new StackPane();
+             stack.getChildren().addAll(y, y.getName());
+             packageName.getText();
+             data3.getShapes().add(stack);
+             reloadWorkspace();
+            // data3.getShapes().remove(stack);
+          }
+        });
+        row8Box.getChildren().add(packageNameLabel);
+        row8Box.getChildren().add(packageName);
+        parentNameLabel = new Label("Parent");
+        parentName = new ChoiceBox();
+        parentName.getItems().addAll("P1", "P2", "P3");
+        row8Box.getChildren().add(parentNameLabel);
+        row8Box.getChildren().add(parentName);
+        
+        row9Box = new VBox();
+        table = new TableView();
+        table.setEditable(true);
+        TableColumn nameCol = new TableColumn("Name");
+        TableColumn typeCol = new TableColumn("Type");
+        TableColumn accessCol = new TableColumn("Access");
+        
+        ObservableList<DraggableRectangle> data2; 
+        data2 = FXCollections.observableArrayList(new DraggableRectangle());
+        DraggableRectangle x = new DraggableRectangle();
+        x.start(25, 30);
+        data2.add(x);
+        nameCol.setMinWidth(100);
+        typeCol.setMinWidth(100);
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("startX"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("startY"));
+
+        table.setItems(data2);
+        table.getColumns().addAll(nameCol, typeCol, accessCol);
+        row9Box.getChildren().add(table);
 	
 	// NOW ORGANIZE THE EDIT TOOLBAR
 	editToolbar.getChildren().add(row1Box);
@@ -216,6 +298,8 @@ public class Workspace extends AppWorkspaceComponent {
 	editToolbar.getChildren().add(row5Box);
 	editToolbar.getChildren().add(row6Box);
 	editToolbar.getChildren().add(row7Box);
+        editToolbar.getChildren().add(row8Box);
+        editToolbar.getChildren().add(row9Box);
 	
 	// WE'LL RENDER OUR STUFF HERE IN THE CANVAS
 	canvas = new Pane();
@@ -230,7 +314,7 @@ public class Workspace extends AppWorkspaceComponent {
 
 	// AND NOW SETUP THE WORKSPACE
 	workspace = new BorderPane();
-	((BorderPane)workspace).setLeft(editToolbar);
+	((BorderPane)workspace).setRight(editToolbar);
 	((BorderPane)workspace).setCenter(canvas);
     }
     

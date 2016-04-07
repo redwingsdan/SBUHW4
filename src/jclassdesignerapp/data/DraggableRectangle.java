@@ -1,6 +1,7 @@
 package jclassdesignerapp.data;
 
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * This is a draggable rectangle for our pose application.
@@ -11,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 public class DraggableRectangle extends Rectangle implements Draggable {
     double startX;
     double startY;
+    Text text;
     
     public DraggableRectangle() {
 	setX(0.0);
@@ -20,6 +22,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
 	setOpacity(1.0);
 	startX = 0.0;
 	startY = 0.0;
+        text = new Text("");
     }
     
     @Override
@@ -71,4 +74,18 @@ public class DraggableRectangle extends Rectangle implements Draggable {
     public String getShapeType() {
 	return RECTANGLE;
     }
+    
+    public double getStartX() {
+        return startX;
+    }
+    public double getStartY() {
+        return startY;
+    }
+    public void setName(String n) {
+        this.text.setText(n);
+    }
+    public Text getName() {
+        return text;
+    }
+    
 }
