@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 import jclassdesignerapp.data.DataManager;
 import jclassdesignerapp.data.Draggable;
 import jclassdesignerapp.data.PoseMakerState;
@@ -46,9 +47,10 @@ public class CanvasController {
             Node shape;
             try{
 	     shape = dataManager.selectTopShape(x, y);
+             
             }
             catch(Exception e){
-                 shape = (StackPane) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
+                 shape = (Text) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
             }
 	    Scene scene = app.getGUI().getPrimaryScene();
 
@@ -83,7 +85,10 @@ public class CanvasController {
 	DataManager dataManager = (DataManager)app.getDataComponent();
 	if (dataManager.isInState(SIZING_SHAPE)) {
 	    Draggable newDraggableShape = (Draggable)dataManager.getNewShape();
-	    newDraggableShape.size(x, y);
+             newDraggableShape.setLocationAndSize(x, y, 400, 100);
+             dataManager.setState(PoseMakerState.DRAGGING_SHAPE);
+	    //newDraggableShape.size(x, y);
+            //newDraggableShape.setLocationAndSize(x, y, 200, 200);
 	}
 	else if (dataManager.isInState(DRAGGING_SHAPE)) {
 	    Draggable selectedDraggableShape = (Draggable)dataManager.getSelectedShape();

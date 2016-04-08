@@ -39,12 +39,18 @@ public class DraggableRectangle extends Rectangle implements Draggable {
 	startY = y;
 	setX(x);
 	setY(y);
+        text.setLayoutX(x);
+        text.setLayoutY(y);
     }
     
     @Override
     public void drag(int x, int y) {
 	double diffX = x - (getX() + (getWidth()/2));
 	double diffY = y - (getY() + (getHeight()/2));
+        text.setLayoutX(diffX);
+        text.setLayoutY(diffY);
+        text.setX(diffX);
+        text.setY(diffY);
 	double newX = getX() + diffX;
 	double newY = getY() + diffY;
 	xProperty().set(newX);

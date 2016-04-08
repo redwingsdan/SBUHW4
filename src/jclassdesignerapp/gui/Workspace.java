@@ -141,7 +141,10 @@ public class Workspace extends AppWorkspaceComponent {
     Label parentNameLabel;
     ChoiceBox parentName;
     
+    VBox row10Box;
+    
     TableView table;
+    TableView table2;
     
     // THIS IS WHERE WE'LL RENDER OUR DRAWING
     Pane canvas;
@@ -202,7 +205,7 @@ public class Workspace extends AppWorkspaceComponent {
 	selectionToolButton = gui.initChildButton(row1Box, SELECTION_TOOL_ICON.toString(), SELECTION_TOOL_TOOLTIP.toString(), true);
 	removeButton = gui.initChildButton(row1Box, REMOVE_ICON.toString(), REMOVE_TOOLTIP.toString(), true);
 	rectButton = gui.initChildButton(row1Box, RECTANGLE_ICON.toString(), RECTANGLE_TOOLTIP.toString(), false);
-	ellipseButton = gui.initChildButton(row1Box, ELLIPSE_ICON.toString(), ELLIPSE_TOOLTIP.toString(), false);
+	//ellipseButton = gui.initChildButton(row1Box, ELLIPSE_ICON.toString(), ELLIPSE_TOOLTIP.toString(), false);
 
 	// ROW 2
 	row2Box = new HBox();
@@ -249,34 +252,41 @@ public class Workspace extends AppWorkspaceComponent {
         
         packageNameLabel = new Label("Package Name");
         packageName = new TextField();
-        packageName.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        className.setOnKeyReleased(new EventHandler<KeyEvent>() {
          public void handle(KeyEvent event) {
              DataManager data3 = (DataManager)app.getDataComponent();
              //add pane inside the rectangle
-             data3.getShapes().remove(data3.getShapes().size()-1);
-             try{
+            // data3.getShapes().remove(data3.getShapes().size()-1);
+      /*       try{
              DraggablePane y = (DraggablePane)data3.getSelectedShape();
-             y.setName(packageName.getText());
-             StackPane stack = new StackPane();
-             stack.getChildren().addAll(y, y.getName());
-             packageName.getText();
-             data3.getShapes().add(stack);
-             data3.getShapes().add(new Text("Hello"));
+             y.setName(className.getText());
+            // StackPane stack = new StackPane();
+            // stack.getChildren().addAll(y, y.getName());
+             className.getText();
+           //  data3.getShapes().add(stack);
+            /// data3.getShapes().add(new Text("Hello"));
              reloadWorkspace();
              //data3.getShapes().remove(stack);
              }
-             catch(Exception e)
-             {
+            */
+          //   catch(Exception e)
+          //   {
                  DraggableRectangle y = (DraggableRectangle)data3.getSelectedShape();
-                   y.setName(packageName.getText());
-                   StackPane stack = new StackPane();
-             stack.getChildren().addAll(y, y.getName());
-             packageName.getText();
-             data3.getShapes().add(stack);
-             data3.getShapes().add(new Text("Hello"));
-             reloadWorkspace();
+                
+                   y.setName(className.getText());
+                   //StackPane stack = new StackPane();
+             //stack.getChildren().addAll(y, y.getName());
+             className.getText();
+            // y.getName().setLayoutX(y.getLayoutX());
+            // y.getName().setLayoutY(y.getLayoutY());
+             //data3.getShapes().add(stack);
+             //data3.getShapes().add(new Text("words"));
+            
+// data3.getShapes().add(y.getName());
+           
+            // reloadWorkspace();
            //  data3.getShapes().remove(stack);
-             }
+           //  }
              
              
             // data3.getShapes().remove(stack);
@@ -293,7 +303,7 @@ public class Workspace extends AppWorkspaceComponent {
         row9Box = new VBox();
         table = new TableView();
         table.setEditable(true);
-        TableColumn nameCol = new TableColumn("Name");
+        TableColumn nameCol = new TableColumn("VARIABLES");
         TableColumn typeCol = new TableColumn("Type");
         TableColumn accessCol = new TableColumn("Access");
         
@@ -310,17 +320,40 @@ public class Workspace extends AppWorkspaceComponent {
         table.setItems(data2);
         table.getColumns().addAll(nameCol, typeCol, accessCol);
         row9Box.getChildren().add(table);
+        
+        
+        row10Box = new VBox();
+        table2 = new TableView();
+        table2.setEditable(true);
+        TableColumn nameCol2 = new TableColumn("METHODS");
+        TableColumn typeCol2 = new TableColumn("Type2");
+        TableColumn accessCol2 = new TableColumn("Access2");
+        
+        ObservableList<DraggableRectangle> data22; 
+        data22 = FXCollections.observableArrayList(new DraggableRectangle());
+        DraggableRectangle x2 = new DraggableRectangle();
+        x2.start(25, 30);
+        data22.add(x2);
+        nameCol2.setMinWidth(100);
+        typeCol2.setMinWidth(100);
+        nameCol2.setCellValueFactory(new PropertyValueFactory<>("startX"));
+        typeCol2.setCellValueFactory(new PropertyValueFactory<>("startY"));
+
+        table2.setItems(data22);
+        table2.getColumns().addAll(nameCol2, typeCol2, accessCol2);
+        row10Box.getChildren().add(table2);
 	
 	// NOW ORGANIZE THE EDIT TOOLBAR
 	editToolbar.getChildren().add(row1Box);
-	editToolbar.getChildren().add(row2Box);
-	editToolbar.getChildren().add(row3Box);
-	editToolbar.getChildren().add(row4Box);
-	editToolbar.getChildren().add(row5Box);
-	editToolbar.getChildren().add(row6Box);
-	editToolbar.getChildren().add(row7Box);
+	//editToolbar.getChildren().add(row2Box);
+	//editToolbar.getChildren().add(row3Box);
+	//editToolbar.getChildren().add(row4Box);
+	//editToolbar.getChildren().add(row5Box);
+	//editToolbar.getChildren().add(row6Box);
+	//editToolbar.getChildren().add(row7Box);
         editToolbar.getChildren().add(row8Box);
         editToolbar.getChildren().add(row9Box);
+        editToolbar.getChildren().add(row10Box);
 	
 	// WE'LL RENDER OUR STUFF HERE IN THE CANVAS
 	canvas = new Pane();
@@ -358,9 +391,9 @@ public class Workspace extends AppWorkspaceComponent {
 	rectButton.setOnAction(e->{
 	    poseEditController.processSelectRectangleToDraw();
 	});
-	ellipseButton.setOnAction(e->{
-	    poseEditController.processSelectEllipseToDraw();
-	});
+	//ellipseButton.setOnAction(e->{
+	//    poseEditController.processSelectEllipseToDraw();
+	//});
 	
 	moveToBackButton.setOnAction(e->{
 	    poseEditController.processMoveSelectedShapeToBack();
@@ -448,6 +481,10 @@ public class Workspace extends AppWorkspaceComponent {
 	row6Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
 	outlineThicknessLabel.getStyleClass().add(CLASS_COLOR_CHOOSER_CONTROL);
 	row7Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
+        
+        row8Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
+        row9Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
+        row10Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
     }
 
     /**
@@ -461,13 +498,13 @@ public class Workspace extends AppWorkspaceComponent {
 	    selectionToolButton.setDisable(false);
 	    removeButton.setDisable(true);
 	    rectButton.setDisable(true);
-	    ellipseButton.setDisable(false);
+//	    ellipseButton.setDisable(false);
 	}
 	else if (dataManager.isInState(PoseMakerState.STARTING_ELLIPSE)) {
 	    selectionToolButton.setDisable(false);
 	    removeButton.setDisable(true);
 	    rectButton.setDisable(false);
-	    ellipseButton.setDisable(true);
+	 //   ellipseButton.setDisable(true);
 	}
 	else if (dataManager.isInState(PoseMakerState.SELECTING_SHAPE) 
 		|| dataManager.isInState(PoseMakerState.DRAGGING_SHAPE)
@@ -476,7 +513,7 @@ public class Workspace extends AppWorkspaceComponent {
 	    selectionToolButton.setDisable(true);
 	    removeButton.setDisable(shapeIsNotSelected);
 	    rectButton.setDisable(false);
-	    ellipseButton.setDisable(false);
+//	    ellipseButton.setDisable(false);
 	    moveToFrontButton.setDisable(shapeIsNotSelected);
 	    moveToBackButton.setDisable(shapeIsNotSelected);
 	}

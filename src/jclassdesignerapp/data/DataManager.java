@@ -245,6 +245,7 @@ public class DataManager implements AppDataComponent {
 	
 	// ADD THE SHAPE TO THE CANVAS
 	shapes.add(newShape);
+        
 	
 	// GO INTO SHAPE SIZING MODE
 	state = PoseMakerState.SIZING_SHAPE;
