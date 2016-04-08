@@ -224,7 +224,7 @@ public class DataManager implements AppDataComponent {
     }
 
     public void startNewEllipse(int x, int y) {
-	DraggableEllipse newEllipse = new DraggableEllipse();
+	DraggablePane newEllipse = new DraggablePane();
 	newEllipse.start(x, y);
 	newShape = newEllipse;
 	initNewShape();

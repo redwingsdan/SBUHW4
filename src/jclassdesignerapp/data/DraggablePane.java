@@ -1,6 +1,7 @@
 package jclassdesignerapp.data;
 
 import javafx.scene.shape.Ellipse;
+import javafx.scene.text.Text;
 
 /**
  * This is a draggable ellipse for our pose application.
@@ -8,11 +9,12 @@ import javafx.scene.shape.Ellipse;
  * @author McKillaGorilla
  * @verion 1.0
  */
-public class DraggableEllipse extends Ellipse implements Draggable {
+public class DraggablePane extends Ellipse implements Draggable {
     double startCenterX;
     double startCenterY;
+    Text text;
     
-    public DraggableEllipse() {
+    public DraggablePane() {
 	setCenterX(0.0);
 	setCenterY(0.0);
 	setRadiusX(0.0);
@@ -20,6 +22,7 @@ public class DraggableEllipse extends Ellipse implements Draggable {
 	setOpacity(1.0);
 	startCenterX = 0.0;
 	startCenterY = 0.0;
+        text = new Text("");
     }
     
     @Override
@@ -89,5 +92,20 @@ public class DraggableEllipse extends Ellipse implements Draggable {
     @Override
     public String getShapeType() {
 	return ELLIPSE;
+    }
+    
+     public double getStartX() {
+        return startCenterX;
+    }
+    public double getStartY() {
+        return startCenterY;
+    }
+    public void setName(String n) {
+        this.text.setText(n);
+        text.setLayoutX(100);
+        text.setLayoutY(500);
+    }
+    public Text getName() {
+        return text;
     }
 }

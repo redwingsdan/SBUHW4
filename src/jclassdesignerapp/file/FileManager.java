@@ -27,7 +27,7 @@ import javax.json.stream.JsonGenerator;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 import jclassdesignerapp.data.DataManager;
-import jclassdesignerapp.data.DraggableEllipse;
+import jclassdesignerapp.data.DraggablePane;
 import jclassdesignerapp.data.DraggableRectangle;
 import jclassdesignerapp.data.Draggable;
 import static jclassdesignerapp.data.Draggable.RECTANGLE;
@@ -193,7 +193,7 @@ public class FileManager implements AppFileComponent {
 	    shape = new DraggableRectangle();
 	}
 	else {
-	    shape = new DraggableEllipse();
+	    shape = new DraggablePane();
 	}
 	
 	// THEN LOAD ITS FILL AND OUTLINE PROPERTIES

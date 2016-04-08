@@ -1,5 +1,6 @@
 package jclassdesignerapp.data;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -13,6 +14,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
     double startX;
     double startY;
     Text text;
+    Pane pane;
     
     public DraggableRectangle() {
 	setX(0.0);
@@ -23,6 +25,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
 	startX = 0.0;
 	startY = 0.0;
         text = new Text("");
+        pane = new Pane();
     }
     
     @Override
@@ -83,6 +86,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
     }
     public void setName(String n) {
         this.text.setText(n);
+        pane.getChildren().add(text);
     }
     public Text getName() {
         return text;

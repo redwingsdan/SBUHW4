@@ -1,7 +1,10 @@
 package jclassdesignerapp.controller;
 
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import jclassdesignerapp.data.DataManager;
 import jclassdesignerapp.data.Draggable;
@@ -40,7 +43,13 @@ public class CanvasController {
 	DataManager dataManager = (DataManager)app.getDataComponent();
 	if (dataManager.isInState(SELECTING_SHAPE)) {
 	    // SELECT THE TOP SHAPE
-	    Shape shape = dataManager.selectTopShape(x, y);
+            Node shape;
+            try{
+	     shape = dataManager.selectTopShape(x, y);
+            }
+            catch(Exception e){
+                 shape = (StackPane) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
+            }
 	    Scene scene = app.getGUI().getPrimaryScene();
 
 	    // AND START DRAGGING IT

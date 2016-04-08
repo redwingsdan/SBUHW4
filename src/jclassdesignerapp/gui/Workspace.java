@@ -53,6 +53,7 @@ import jclassdesignerapp.controller.PoseEditController;
 import jclassdesignerapp.data.DataManager;
 import static jclassdesignerapp.data.DataManager.BLACK_HEX;
 import static jclassdesignerapp.data.DataManager.WHITE_HEX;
+import jclassdesignerapp.data.DraggablePane;
 import jclassdesignerapp.data.DraggableRectangle;
 import jclassdesignerapp.data.PoseMakerState;
 import saf.ui.AppYesNoCancelDialogSingleton;
@@ -248,16 +249,36 @@ public class Workspace extends AppWorkspaceComponent {
         
         packageNameLabel = new Label("Package Name");
         packageName = new TextField();
-        packageName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        packageName.setOnKeyReleased(new EventHandler<KeyEvent>() {
          public void handle(KeyEvent event) {
              DataManager data3 = (DataManager)app.getDataComponent();
-             DraggableRectangle y = (DraggableRectangle)data3.getSelectedShape();
+             //add pane inside the rectangle
+             data3.getShapes().remove(data3.getShapes().size()-1);
+             try{
+             DraggablePane y = (DraggablePane)data3.getSelectedShape();
              y.setName(packageName.getText());
              StackPane stack = new StackPane();
              stack.getChildren().addAll(y, y.getName());
              packageName.getText();
              data3.getShapes().add(stack);
+             data3.getShapes().add(new Text("Hello"));
              reloadWorkspace();
+             //data3.getShapes().remove(stack);
+             }
+             catch(Exception e)
+             {
+                 DraggableRectangle y = (DraggableRectangle)data3.getSelectedShape();
+                   y.setName(packageName.getText());
+                   StackPane stack = new StackPane();
+             stack.getChildren().addAll(y, y.getName());
+             packageName.getText();
+             data3.getShapes().add(stack);
+             data3.getShapes().add(new Text("Hello"));
+             reloadWorkspace();
+           //  data3.getShapes().remove(stack);
+             }
+             
+             
             // data3.getShapes().remove(stack);
           }
         });
