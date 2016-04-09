@@ -93,11 +93,11 @@ public class PoseEditController {
         
     public void processSelectFillColor() {
 	Workspace workspace = (Workspace)app.getWorkspaceComponent();
-	Color selectedColor = workspace.getFillColorPicker().getValue();
-	if (selectedColor != null) {
-	    dataManager.setCurrentFillColor(selectedColor);
+	//Color selectedColor = workspace.getFillColorPicker().getValue();
+	//if (selectedColor != null) {
+	   // dataManager.setCurrentFillColor(selectedColor);
 	    app.getGUI().updateToolbarControls(false);
-	}
+	//}
     }
     
     public void processSelectOutlineColor() {

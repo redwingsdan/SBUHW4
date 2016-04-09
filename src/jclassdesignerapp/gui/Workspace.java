@@ -568,8 +568,8 @@ public class Workspace extends AppWorkspaceComponent {
 	    Color fillColor = (Color)shape.getFill();
 	    Color strokeColor = (Color)shape.getStroke();
 	    double lineThickness = shape.getStrokeWidth();
-	    fillColorPicker.setValue(fillColor);
-	    outlineColorPicker.setValue(strokeColor);
+	    //fillColorPicker.setValue(fillColor);
+	    //outlineColorPicker.setValue(strokeColor);
 	    outlineThicknessSlider.setValue(lineThickness);	    
 	}
     }
