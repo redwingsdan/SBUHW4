@@ -263,6 +263,23 @@ public class Workspace extends AppWorkspaceComponent {
         
         packageNameLabel = new Label("Package Name");
         packageName = new TextField();
+        
+        packageName.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent event) {
+                DataManager data3 = (DataManager)app.getDataComponent();
+                DraggableRectangle y = (DraggableRectangle)data3.getSelectedShape();
+                
+                   y.setName2(packageName.getText());
+                   //StackPane stack = new StackPane();
+             //stack.getChildren().addAll(y, y.getName());
+             packageName.getText();
+             canvas.getChildren().add(y.getName2());
+             Text z = y.getName2();
+             z.setX(y.getX() + 120);
+             z.setY(y.getY() + 70);
+             data3.getShapes().add(z);
+            }
+        });
         className.setOnKeyReleased(new EventHandler<KeyEvent>() {
          public void handle(KeyEvent event) {
              DataManager data3 = (DataManager)app.getDataComponent();
@@ -291,7 +308,7 @@ public class Workspace extends AppWorkspaceComponent {
              canvas.getChildren().add(y.getName());
              Text z = y.getName();
              z.setX(y.getX() + 120);
-             z.setY(y.getY() + 50);
+             z.setY(y.getY() + 30);
              data3.getShapes().add(z);
              //canvas.getChildren().add(new Rectangle(200,200));
             // y.getName().setLayoutX(y.getLayoutX());
@@ -511,6 +528,13 @@ public class Workspace extends AppWorkspaceComponent {
     @Override
     public void reloadWorkspace() {
 	DataManager dataManager = (DataManager)app.getDataComponent();
+        
+        DraggableRectangle y = (DraggableRectangle)dataManager.getSelectedShape();
+        if(y != null)
+        {
+        className.setText(y.getName().getText());
+        packageName.setText(y.getName2().getText());
+        }
 	if (dataManager.isInState(PoseMakerState.STARTING_RECTANGLE)) {
 	    selectionToolButton.setDisable(false);
 	    //removeButton.setDisable(true);

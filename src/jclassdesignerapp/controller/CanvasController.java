@@ -53,6 +53,7 @@ public class CanvasController {
                  shape = (Text) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
             }
 	    Scene scene = app.getGUI().getPrimaryScene();
+            app.getWorkspaceComponent().reloadWorkspace();
 
 	    // AND START DRAGGING IT
 	    if (shape != null) {

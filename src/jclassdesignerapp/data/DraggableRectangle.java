@@ -15,6 +15,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
     double startY;
     Text text;
     Pane pane;
+    Text text2;
     
     public DraggableRectangle() {
 	setX(0.0);
@@ -25,6 +26,7 @@ public class DraggableRectangle extends Rectangle implements Draggable {
 	startX = 0.0;
 	startY = 0.0;
         text = new Text("");
+        text2 = new Text("");
         pane = new Pane();
     }
     
@@ -53,7 +55,9 @@ public class DraggableRectangle extends Rectangle implements Draggable {
         text.setLayoutX(diffX);
         text.setLayoutY(diffY);
         text.setX(getX() + 120);
-        text.setY(getY() + 50);
+        text.setY(getY() + 30);
+        text2.setX(getX() + 120);
+        text2.setY(getY() + 70);
 	double newX = getX() + diffX;
 	double newY = getY() + diffY;
 	xProperty().set(newX);
@@ -97,8 +101,17 @@ public class DraggableRectangle extends Rectangle implements Draggable {
         this.text.setText(n);
         pane.getChildren().add(text);
     }
+    
+    public void setName2(String n) {
+        this.text2.setText(n);
+        pane.getChildren().add(text2);
+    }
     public Text getName() {
         return text;
+    }
+    
+    public Text getName2() {
+        return text2;
     }
     
 }
