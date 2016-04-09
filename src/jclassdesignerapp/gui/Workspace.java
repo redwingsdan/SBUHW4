@@ -1,17 +1,9 @@
 package jclassdesignerapp.gui;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ChoiceBox;
@@ -28,12 +20,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import static jclassdesignerapp.PropertyType.DIMENSIONS_ICON;
+import static jclassdesignerapp.PropertyType.DIMENSIONS_TOOLTIP;
 import static jclassdesignerapp.PropertyType.ELLIPSE_ICON;
 import static jclassdesignerapp.PropertyType.ELLIPSE_TOOLTIP;
 import static jclassdesignerapp.PropertyType.MOVE_TO_BACK_ICON;
@@ -42,23 +34,30 @@ import static jclassdesignerapp.PropertyType.MOVE_TO_FRONT_ICON;
 import static jclassdesignerapp.PropertyType.MOVE_TO_FRONT_TOOLTIP;
 import static jclassdesignerapp.PropertyType.RECTANGLE_ICON;
 import static jclassdesignerapp.PropertyType.RECTANGLE_TOOLTIP;
+import static jclassdesignerapp.PropertyType.REDO_ICON;
+import static jclassdesignerapp.PropertyType.REDO_TOOLTIP;
+import static jclassdesignerapp.PropertyType.REMOVE_ELEMENT_TOOLTIP;
 import static jclassdesignerapp.PropertyType.REMOVE_ICON;
 import static jclassdesignerapp.PropertyType.REMOVE_TOOLTIP;
 import static jclassdesignerapp.PropertyType.SELECTION_TOOL_ICON;
 import static jclassdesignerapp.PropertyType.SELECTION_TOOL_TOOLTIP;
 import static jclassdesignerapp.PropertyType.SNAPSHOT_ICON;
 import static jclassdesignerapp.PropertyType.SNAPSHOT_TOOLTIP;
+import static jclassdesignerapp.PropertyType.UNDO_ICON;
+import static jclassdesignerapp.PropertyType.UNDO_TOOLTIP;
+import static jclassdesignerapp.PropertyType.ZOOMIN_ICON;
+import static jclassdesignerapp.PropertyType.ZOOMIN_TOOLTIP;
+import static jclassdesignerapp.PropertyType.ZOOMOUT_ICON;
+import static jclassdesignerapp.PropertyType.ZOOMOUT_TOOLTIP;
 import jclassdesignerapp.controller.CanvasController;
 import jclassdesignerapp.controller.PoseEditController;
 import jclassdesignerapp.data.DataManager;
 import static jclassdesignerapp.data.DataManager.BLACK_HEX;
 import static jclassdesignerapp.data.DataManager.WHITE_HEX;
-import jclassdesignerapp.data.DraggablePane;
 import jclassdesignerapp.data.DraggableRectangle;
 import jclassdesignerapp.data.PoseMakerState;
 import saf.ui.AppYesNoCancelDialogSingleton;
 import saf.ui.AppMessageDialogSingleton;
-import properties_manager.PropertiesManager;
 import saf.ui.AppGUI;
 import saf.AppTemplate;
 import saf.components.AppWorkspaceComponent;
@@ -202,10 +201,22 @@ public class Workspace extends AppWorkspaceComponent {
 	
 	// ROW 1
 	row1Box = new HBox();
-	selectionToolButton = gui.initChildButton(row1Box, SELECTION_TOOL_ICON.toString(), SELECTION_TOOL_TOOLTIP.toString(), true);
-	removeButton = gui.initChildButton(row1Box, REMOVE_ICON.toString(), REMOVE_TOOLTIP.toString(), true);
-	rectButton = gui.initChildButton(row1Box, RECTANGLE_ICON.toString(), RECTANGLE_TOOLTIP.toString(), false);
-	//ellipseButton = gui.initChildButton(row1Box, ELLIPSE_ICON.toString(), ELLIPSE_TOOLTIP.toString(), false);
+	selectionToolButton = gui.initChildButton(gui.getFileToolbar(), SELECTION_TOOL_ICON.toString(), SELECTION_TOOL_TOOLTIP.toString(), true);
+	removeButton = gui.initChildButton(gui.getFileToolbar(), REMOVE_ICON.toString(), REMOVE_TOOLTIP.toString(), false);
+        
+	rectButton = gui.initChildButton(gui.getFileToolbar(), RECTANGLE_ICON.toString(), RECTANGLE_TOOLTIP.toString(), false);
+       // Button select = gui.initChildButton(gui.getFileToolbar(),	SELECTION_TOOL_ICON.toString(),	    SELECTION_TOOL_TOOLTIP.toString(),	false);
+        
+       // Button addClass = gui.initChildButton(gui.getFileToolbar(),	RECTANGLE_ICON.toString(),	    RECTANGLE_TOOLTIP.toString(),	false);
+        Button addInterface = gui.initChildButton(gui.getFileToolbar(),	ELLIPSE_ICON.toString(),	    ELLIPSE_TOOLTIP.toString(),	false);
+        Button resize = gui.initChildButton(gui.getFileToolbar(),	DIMENSIONS_ICON.toString(),	    DIMENSIONS_TOOLTIP.toString(),	false);
+       /// Button remove = gui.initChildButton(gui.getFileToolbar(),	REMOVE_ICON.toString(),	    REMOVE_ELEMENT_TOOLTIP.toString(),	false);
+        Button undo = gui.initChildButton(gui.getFileToolbar(),	UNDO_ICON.toString(),	    UNDO_TOOLTIP.toString(),	false);
+        Button redo = gui.initChildButton(gui.getFileToolbar(),	REDO_ICON.toString(),	    REDO_TOOLTIP.toString(),	false);
+    
+        Button zoomIn = gui.initChildButton(gui.getFileToolbar(),	ZOOMIN_ICON.toString(),	    ZOOMIN_TOOLTIP.toString(),	false);
+        Button zoomOut = gui.initChildButton(gui.getFileToolbar(),	ZOOMOUT_ICON.toString(),	    ZOOMOUT_TOOLTIP.toString(),	false);
+        //ellipseButton = gui.initChildButton(row1Box, ELLIPSE_ICON.toString(), ELLIPSE_TOOLTIP.toString(), false);
 
 	// ROW 2
 	row2Box = new HBox();
@@ -277,6 +288,12 @@ public class Workspace extends AppWorkspaceComponent {
                    //StackPane stack = new StackPane();
              //stack.getChildren().addAll(y, y.getName());
              className.getText();
+             canvas.getChildren().add(y.getName());
+             Text z = y.getName();
+             z.setX(y.getX() + 120);
+             z.setY(y.getY() + 50);
+             data3.getShapes().add(z);
+             //canvas.getChildren().add(new Rectangle(200,200));
             // y.getName().setLayoutX(y.getLayoutX());
             // y.getName().setLayoutY(y.getLayoutY());
              //data3.getShapes().add(stack);
@@ -344,7 +361,7 @@ public class Workspace extends AppWorkspaceComponent {
         row10Box.getChildren().add(table2);
 	
 	// NOW ORGANIZE THE EDIT TOOLBAR
-	editToolbar.getChildren().add(row1Box);
+	//editToolbar.getChildren().add(row1Box);
 	//editToolbar.getChildren().add(row2Box);
 	//editToolbar.getChildren().add(row3Box);
 	//editToolbar.getChildren().add(row4Box);
@@ -496,13 +513,13 @@ public class Workspace extends AppWorkspaceComponent {
 	DataManager dataManager = (DataManager)app.getDataComponent();
 	if (dataManager.isInState(PoseMakerState.STARTING_RECTANGLE)) {
 	    selectionToolButton.setDisable(false);
-	    removeButton.setDisable(true);
+	    //removeButton.setDisable(true);
 	    rectButton.setDisable(true);
 //	    ellipseButton.setDisable(false);
 	}
 	else if (dataManager.isInState(PoseMakerState.STARTING_ELLIPSE)) {
 	    selectionToolButton.setDisable(false);
-	    removeButton.setDisable(true);
+	    //removeButton.setDisable(true);
 	    rectButton.setDisable(false);
 	 //   ellipseButton.setDisable(true);
 	}
@@ -511,14 +528,14 @@ public class Workspace extends AppWorkspaceComponent {
 		|| dataManager.isInState(PoseMakerState.DRAGGING_NOTHING)) {
 	    boolean shapeIsNotSelected = dataManager.getSelectedShape() == null;
 	    selectionToolButton.setDisable(true);
-	    removeButton.setDisable(shapeIsNotSelected);
+	    //removeButton.setDisable(shapeIsNotSelected);
 	    rectButton.setDisable(false);
 //	    ellipseButton.setDisable(false);
 	    moveToFrontButton.setDisable(shapeIsNotSelected);
 	    moveToBackButton.setDisable(shapeIsNotSelected);
 	}
 	
-	removeButton.setDisable(dataManager.getSelectedShape() == null);
+	//removeButton.setDisable(dataManager.getSelectedShape() == null);
 	backgroundColorPicker.setValue(dataManager.getBackgroundColor());
     }
     
