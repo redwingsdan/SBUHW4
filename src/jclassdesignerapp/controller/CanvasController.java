@@ -47,7 +47,8 @@ public class CanvasController {
             Node shape;
             try{
 	     shape = dataManager.selectTopShape(x, y);
-             
+             Draggable selectedDraggableShape = (Draggable)shape;
+             selectedDraggableShape.drag(x, y);selectedDraggableShape.drag(x, y);
             }
             catch(Exception e){
                  shape = (Text) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
@@ -69,6 +70,8 @@ public class CanvasController {
 	}
 	else if (dataManager.isInState(PoseMakerState.STARTING_RECTANGLE)) {
 	    dataManager.startNewRectangle(x, y);
+            Draggable newDraggableShape = (Draggable)dataManager.getNewShape();
+             newDraggableShape.setLocationAndSize(x, y, 400, 100);
 	}
 	else if (dataManager.isInState(PoseMakerState.STARTING_ELLIPSE)) {
 	    dataManager.startNewEllipse(x, y);

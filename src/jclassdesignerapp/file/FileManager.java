@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -80,7 +81,7 @@ public class FileManager implements AppFileComponent {
 	
 	// FIRST THE BACKGROUND COLOR
 	Color bgColor = dataManager.getBackgroundColor();
-	JsonObject bgColorJson = makeJsonColorObject(bgColor);
+//	JsonObject bgColorJson = makeJsonColorObject(bgColor);
 
 	// NOW BUILD THE JSON OBJCTS TO SAVE
 	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
@@ -93,18 +94,22 @@ public class FileManager implements AppFileComponent {
 	    double y = draggableShape.getY();
 	    double width = draggableShape.getWidth();
 	    double height = draggableShape.getHeight();
-	    JsonObject fillColorJson = makeJsonColorObject((Color)shape.getFill());
-	    JsonObject outlineColorJson = makeJsonColorObject((Color)shape.getStroke());
+//	    JsonObject fillColorJson = makeJsonColorObject((Color)shape.getFill());
+//	    JsonObject outlineColorJson = makeJsonColorObject((Color)shape.getStroke());
 	    double outlineThickness = shape.getStrokeWidth();
-	    
+            DraggableRectangle s = (DraggableRectangle)shape;
+            Text className = s.getName();
+	    Text packageName = s.getName2();
 	    JsonObject shapeJson = Json.createObjectBuilder()
 		    .add(JSON_TYPE, type)
 		    .add(JSON_X, x)
 		    .add(JSON_Y, y)
 		    .add(JSON_WIDTH, width)
 		    .add(JSON_HEIGHT, height)
-		    .add(JSON_FILL_COLOR, fillColorJson)
-		    .add(JSON_OUTLINE_COLOR, outlineColorJson)
+		  //  .add(JSON_FILL_COLOR, fillColorJson)
+		  //  .add(JSON_OUTLINE_COLOR, outlineColorJson)
+                    .add("class", className.toString())
+                    .add("package", packageName.toString())
 		    .add(JSON_OUTLINE_THICKNESS, outlineThickness).build();
 	    arrayBuilder.add(shapeJson);
 	}
@@ -112,7 +117,7 @@ public class FileManager implements AppFileComponent {
 	
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
-		.add(JSON_BG_COLOR, bgColorJson)
+		//.add(JSON_BG_COLOR, bgColorJson)
 		.add(JSON_SHAPES, shapesArray)
 		.build();
 	
@@ -167,8 +172,8 @@ public class FileManager implements AppFileComponent {
 	JsonObject json = loadJSONFile(filePath);
 	
 	// LOAD THE BACKGROUND COLOR
-	Color bgColor = loadColor(json, JSON_BG_COLOR);
-	dataManager.setBackgroundColor(bgColor);
+	//Color bgColor = loadColor(json, JSON_BG_COLOR);
+	//dataManager.setBackgroundColor(bgColor);
 	
 	// AND NOW LOAD ALL THE SHAPES
 	JsonArray jsonShapeArray = json.getJsonArray(JSON_SHAPES);
@@ -197,11 +202,11 @@ public class FileManager implements AppFileComponent {
 	}
 	
 	// THEN LOAD ITS FILL AND OUTLINE PROPERTIES
-	Color fillColor = loadColor(jsonShape, JSON_FILL_COLOR);
-	Color outlineColor = loadColor(jsonShape, JSON_OUTLINE_COLOR);
+	//Color fillColor = loadColor(jsonShape, JSON_FILL_COLOR);
+	//Color outlineColor = loadColor(jsonShape, JSON_OUTLINE_COLOR);
 	double outlineThickness = getDataAsDouble(jsonShape, JSON_OUTLINE_THICKNESS);
-	shape.setFill(fillColor);
-	shape.setStroke(outlineColor);
+	//shape.setFill(fillColor);
+	//shape.setStroke(outlineColor);
 	shape.setStrokeWidth(outlineThickness);
 	
 	// AND THEN ITS DRAGGABLE PROPERTIES

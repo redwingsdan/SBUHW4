@@ -148,6 +148,9 @@ public class DataManager implements AppDataComponent {
     
     public void removeSelectedShape() {
 	if (selectedShape != null) {
+            DraggableRectangle s = (DraggableRectangle)this.getSelectedShape();
+            s.setName("");
+            s.setName2("");
 	    shapes.remove(selectedShape);
 	    selectedShape = null;
 	}
