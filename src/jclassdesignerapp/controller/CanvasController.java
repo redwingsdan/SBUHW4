@@ -51,7 +51,13 @@ public class CanvasController {
              selectedDraggableShape.drag(x, y);selectedDraggableShape.drag(x, y);
             }
             catch(Exception e){
+                try{
                  shape = (Text) dataManager.getShapes().get(dataManager.getShapes().size() - 1);
+                }
+                catch(ClassCastException f)
+                {
+                    shape = dataManager.getShapes().get(dataManager.getShapes().size() - 1);
+                }
             }
 	    Scene scene = app.getGUI().getPrimaryScene();
             app.getWorkspaceComponent().reloadWorkspace();
@@ -96,7 +102,13 @@ public class CanvasController {
 	}
 	else if (dataManager.isInState(DRAGGING_SHAPE)) {
 	    Draggable selectedDraggableShape = (Draggable)dataManager.getSelectedShape();
+            try{
 	    selectedDraggableShape.drag(x, y);
+            }
+            catch(NullPointerException e)
+            {
+                
+            }
 	    app.getGUI().updateToolbarControls(false);
 	}
     }

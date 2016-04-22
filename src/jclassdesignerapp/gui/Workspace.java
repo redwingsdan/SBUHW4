@@ -277,7 +277,7 @@ public class Workspace extends AppWorkspaceComponent {
              Text z = y.getName2();
              z.setX(y.getX() + 120);
              z.setY(y.getY() + 70);
-             data3.getShapes().add(z);
+//             data3.getShapes().add(z);
             }
         });
         className.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -305,7 +305,7 @@ public class Workspace extends AppWorkspaceComponent {
                    //StackPane stack = new StackPane();
              //stack.getChildren().addAll(y, y.getName());
              className.getText();
-             canvas.getChildren().add(y.getName());
+            // canvas.getChildren().add(y.getName());
              Text z = y.getName();
              z.setX(y.getX() + 120);
              z.setY(y.getY() + 30);

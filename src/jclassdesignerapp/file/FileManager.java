@@ -13,6 +13,7 @@ import java.util.Map;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javax.json.Json;
@@ -88,7 +89,8 @@ public class FileManager implements AppFileComponent {
 	ObservableList<Node> shapes = dataManager.getShapes();
 	for (Node node : shapes) {
 	    Shape shape = (Shape)node;
-	    Draggable draggableShape = ((Draggable)shape);
+            try{
+	    Draggable draggableShape = ((Draggable)shape);    
 	    String type = draggableShape.getShapeType();
 	    double x = draggableShape.getX();
 	    double y = draggableShape.getY();
@@ -97,9 +99,16 @@ public class FileManager implements AppFileComponent {
 //	    JsonObject fillColorJson = makeJsonColorObject((Color)shape.getFill());
 //	    JsonObject outlineColorJson = makeJsonColorObject((Color)shape.getStroke());
 	    double outlineThickness = shape.getStrokeWidth();
+            /*
+                DraggableRectangle dr;
+            dr = (DraggableRectangle)draggableShape;
+            Text c = dr.getName();
+            Text p = dr.getName2();
+            */
             DraggableRectangle s = (DraggableRectangle)shape;
             Text className = s.getName();
 	    Text packageName = s.getName2();
+            
 	    JsonObject shapeJson = Json.createObjectBuilder()
 		    .add(JSON_TYPE, type)
 		    .add(JSON_X, x)
@@ -108,10 +117,15 @@ public class FileManager implements AppFileComponent {
 		    .add(JSON_HEIGHT, height)
 		  //  .add(JSON_FILL_COLOR, fillColorJson)
 		  //  .add(JSON_OUTLINE_COLOR, outlineColorJson)
-                    .add("class", className.toString())
-                    .add("package", packageName.toString())
+                    .add("class", className.getText())
+                    .add("package", packageName.getText())
 		    .add(JSON_OUTLINE_THICKNESS, outlineThickness).build();
 	    arrayBuilder.add(shapeJson);
+            }
+            catch(Exception e)
+            {
+                
+            }
 	}
 	JsonArray shapesArray = arrayBuilder.build();
 	
@@ -180,7 +194,14 @@ public class FileManager implements AppFileComponent {
 	for (int i = 0; i < jsonShapeArray.size(); i++) {
 	    JsonObject jsonShape = jsonShapeArray.getJsonObject(i);
 	    Shape shape = loadShape(jsonShape);
+            DraggableRectangle dr = (DraggableRectangle) shape;
 	    dataManager.addShape(shape);
+            dr.getName().setX(dr.getX() + 120);
+            dr.getName().setY(dr.getY() + 30);
+            dataManager.getShapes().add(dr.getName());
+            dr.getName2().setX(dr.getX() + 120);
+            dr.getName2().setY(dr.getY() + 70);
+            dataManager.getShapes().add(dr.getName2());
 	}
     }
     
@@ -214,9 +235,22 @@ public class FileManager implements AppFileComponent {
 	double y = getDataAsDouble(jsonShape, JSON_Y);
 	double width = getDataAsDouble(jsonShape, JSON_WIDTH);
 	double height = getDataAsDouble(jsonShape, JSON_HEIGHT);
+        String c = jsonShape.get("class").toString();
+        String p = jsonShape.get("package").toString();
+        
+        c = c.substring(1, c.length()-1);
+        p = p.substring(1, p.length()-1);
+        
+        String c1 = jsonShape.getString("class");
+        String p1 = jsonShape.getString("package");
+        
+        shape.setFill(Color.WHITE);
+        shape.setStroke(Color.BLACK);
 	Draggable draggableShape = (Draggable)shape;
-	draggableShape.setLocationAndSize(x, y, width, height);
-	
+        DraggableRectangle dr = (DraggableRectangle) draggableShape;
+	dr.setLocationAndSize(x, y, width, height);
+        dr.setName(c);
+        dr.setName2(p);
 	// ALL DONE, RETURN IT
 	return shape;
     }

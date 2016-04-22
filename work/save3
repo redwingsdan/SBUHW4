@@ -1,0 +1,25 @@
+
+{
+    "shapes":[
+        {
+            "type":"RECTANGLE",
+            "x":872.0,
+            "y":64.0,
+            "width":400.0,
+            "height":100.0,
+            "class":"so let me see",
+            "package":"or let me be me",
+            "outline_thickness":1.0
+        },
+        {
+            "type":"RECTANGLE",
+            "x":545.0,
+            "y":281.0,
+            "width":400.0,
+            "height":100.0,
+            "class":"fcc wont",
+            "package":"let me be",
+            "outline_thickness":1.0
+        }
+    ]
+}

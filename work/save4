@@ -1,0 +1,25 @@
+
+{
+    "shapes":[
+        {
+            "type":"RECTANGLE",
+            "x":782.0,
+            "y":399.0,
+            "width":400.0,
+            "height":100.0,
+            "class":"classassin",
+            "package":"packing heat",
+            "outline_thickness":1.0
+        },
+        {
+            "type":"RECTANGLE",
+            "x":595.0,
+            "y":138.0,
+            "width":400.0,
+            "height":100.0,
+            "class":"wfafga",
+            "package":"packman",
+            "outline_thickness":1.0
+        }
+    ]
+}
