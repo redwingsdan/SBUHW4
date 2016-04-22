@@ -13,11 +13,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -56,6 +58,7 @@ import static jclassdesignerapp.data.DataManager.BLACK_HEX;
 import static jclassdesignerapp.data.DataManager.WHITE_HEX;
 import jclassdesignerapp.data.DraggableRectangle;
 import jclassdesignerapp.data.PoseMakerState;
+import properties_manager.PropertiesManager;
 import saf.ui.AppYesNoCancelDialogSingleton;
 import saf.ui.AppMessageDialogSingleton;
 import saf.ui.AppGUI;
@@ -148,6 +151,7 @@ public class Workspace extends AppWorkspaceComponent {
     // THIS IS WHERE WE'LL RENDER OUR DRAWING
     Pane canvas;
     
+    FlowPane fp;
     // HERE ARE THE CONTROLLERS
     CanvasController canvasController;
     PoseEditController poseEditController;    
@@ -201,22 +205,27 @@ public class Workspace extends AppWorkspaceComponent {
 	
 	// ROW 1
 	row1Box = new HBox();
-	selectionToolButton = gui.initChildButton(gui.getFileToolbar(), SELECTION_TOOL_ICON.toString(), SELECTION_TOOL_TOOLTIP.toString(), true);
-	removeButton = gui.initChildButton(gui.getFileToolbar(), REMOVE_ICON.toString(), REMOVE_TOOLTIP.toString(), false);
         
-	rectButton = gui.initChildButton(gui.getFileToolbar(), RECTANGLE_ICON.toString(), RECTANGLE_TOOLTIP.toString(), false);
+       fp = new FlowPane();
+       // FlowPane fp = gui.getFileToolbar();
+	selectionToolButton = initChildButton(fp, SELECTION_TOOL_ICON.toString(), SELECTION_TOOL_TOOLTIP.toString(), true);
+	removeButton = initChildButton(fp, REMOVE_ICON.toString(), REMOVE_TOOLTIP.toString(), false);
+        
+	rectButton = initChildButton(fp, RECTANGLE_ICON.toString(), RECTANGLE_TOOLTIP.toString(), false);
        // Button select = gui.initChildButton(gui.getFileToolbar(),	SELECTION_TOOL_ICON.toString(),	    SELECTION_TOOL_TOOLTIP.toString(),	false);
         
        // Button addClass = gui.initChildButton(gui.getFileToolbar(),	RECTANGLE_ICON.toString(),	    RECTANGLE_TOOLTIP.toString(),	false);
-        Button addInterface = gui.initChildButton(gui.getFileToolbar(),	ELLIPSE_ICON.toString(),	    ELLIPSE_TOOLTIP.toString(),	false);
-        Button resize = gui.initChildButton(gui.getFileToolbar(),	DIMENSIONS_ICON.toString(),	    DIMENSIONS_TOOLTIP.toString(),	false);
+        Button addInterface = initChildButton(fp,	ELLIPSE_ICON.toString(),	    ELLIPSE_TOOLTIP.toString(),	false);
+        Button resize = initChildButton(fp,	DIMENSIONS_ICON.toString(),	    DIMENSIONS_TOOLTIP.toString(),	false);
        /// Button remove = gui.initChildButton(gui.getFileToolbar(),	REMOVE_ICON.toString(),	    REMOVE_ELEMENT_TOOLTIP.toString(),	false);
-        Button undo = gui.initChildButton(gui.getFileToolbar(),	UNDO_ICON.toString(),	    UNDO_TOOLTIP.toString(),	false);
-        Button redo = gui.initChildButton(gui.getFileToolbar(),	REDO_ICON.toString(),	    REDO_TOOLTIP.toString(),	false);
+        Button undo = initChildButton(fp,	UNDO_ICON.toString(),	    UNDO_TOOLTIP.toString(),	false);
+        Button redo = initChildButton(fp,	REDO_ICON.toString(),	    REDO_TOOLTIP.toString(),	false);
     
-        Button zoomIn = gui.initChildButton(gui.getFileToolbar(),	ZOOMIN_ICON.toString(),	    ZOOMIN_TOOLTIP.toString(),	false);
-        Button zoomOut = gui.initChildButton(gui.getFileToolbar(),	ZOOMOUT_ICON.toString(),	    ZOOMOUT_TOOLTIP.toString(),	false);
+        Button zoomIn = initChildButton(fp,	ZOOMIN_ICON.toString(),	    ZOOMIN_TOOLTIP.toString(),	false);
+        Button zoomOut = initChildButton(fp,	ZOOMOUT_ICON.toString(),	    ZOOMOUT_TOOLTIP.toString(),	false);
         //ellipseButton = gui.initChildButton(row1Box, ELLIPSE_ICON.toString(), ELLIPSE_TOOLTIP.toString(), false);
+        
+      
 
 	// ROW 2
 	row2Box = new HBox();
@@ -402,8 +411,30 @@ public class Workspace extends AppWorkspaceComponent {
 
 	// AND NOW SETUP THE WORKSPACE
 	workspace = new BorderPane();
+        ((BorderPane)workspace).setTop(fp);
 	((BorderPane)workspace).setRight(editToolbar);
 	((BorderPane)workspace).setCenter(canvas);
+    }
+    
+      public Button initChildButton(Pane toolbar, String icon, String tooltip, boolean disabled) {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+	
+	// LOAD THE ICON FROM THE PROVIDED FILE
+        String imagePath = FILE_PROTOCOL + PATH_IMAGES + props.getProperty(icon);
+        Image buttonImage = new Image(imagePath);
+	
+	// NOW MAKE THE BUTTON
+        Button button = new Button();
+        button.setDisable(disabled);
+        button.setGraphic(new ImageView(buttonImage));
+        Tooltip buttonTooltip = new Tooltip(props.getProperty(tooltip));
+        button.setTooltip(buttonTooltip);
+	
+	// PUT THE BUTTON IN THE TOOLBAR
+        toolbar.getChildren().add(button);
+	
+	// AND RETURN THE COMPLETED BUTTON
+        return button;
     }
     
     public void setDebugText(String text) {
@@ -496,7 +527,7 @@ public class Workspace extends AppWorkspaceComponent {
 	// A STYLE CLASS SPECIFIED IN THIS APPLICATION'S
 	// CSS FILE
 	canvas.getStyleClass().add(CLASS_RENDER_CANVAS);
-	
+	fp.getStyleClass().add("bordered_pane");
 	// COLOR PICKER STYLE
 	fillColorPicker.getStyleClass().add(CLASS_BUTTON);
 	outlineColorPicker.getStyleClass().add(CLASS_BUTTON);
