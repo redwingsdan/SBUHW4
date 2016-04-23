@@ -31,6 +31,8 @@ public class DataManager implements AppDataComponent {
     // THESE ARE THE SHAPES TO DRAW
     ObservableList<Node> shapes;
     
+    ArrayList<Node> nodes;
+    
     // THE BACKGROUND COLOR
     Color backgroundColor;
     
@@ -91,6 +93,10 @@ public class DataManager implements AppDataComponent {
 	dropShadowEffect.setBlurType(BlurType.GAUSSIAN);
 	dropShadowEffect.setRadius(15);
 	highlightedEffect = dropShadowEffect;
+    }
+    
+    public DataManager() {
+        nodes = new ArrayList<>();
     }
     
     public ObservableList<Node> getShapes() {
